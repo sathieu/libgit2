@@ -57,6 +57,11 @@
 # define DWORD_MAX 0xffffffff
 #endif
 
+/*
+ * This is ignored; winhttp does not yet support expect/continue.
+ */
+bool git_http__expect_continue = false;
+
 static const char *prefix_https = "https://";
 static const char *upload_pack_service = "upload-pack";
 static const char *upload_pack_ls_service_url = "/info/refs?service=git-upload-pack";
