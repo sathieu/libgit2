@@ -29,31 +29,31 @@ typedef enum {
 	 * A vanilla user/password request
 	 * @see git_cred_userpass_plaintext_new
 	 */
-	GIT_CREDTYPE_USERPASS_PLAINTEXT = (1u << 0),
+	GIT_CRED_USERPASS_PLAINTEXT = (1u << 0),
 
 	/**
 	 * An SSH key-based authentication request
 	 * @see git_cred_ssh_key_new
 	 */
-	GIT_CREDTYPE_SSH_KEY = (1u << 1),
+	GIT_CRED_SSH_KEY = (1u << 1),
 
 	/**
 	 * An SSH key-based authentication request, with a custom signature
 	 * @see git_cred_ssh_custom_new
 	 */
-	GIT_CREDTYPE_SSH_CUSTOM = (1u << 2),
+	GIT_CRED_SSH_CUSTOM = (1u << 2),
 
 	/**
 	 * An NTLM/Negotiate-based authentication request.
 	 * @see git_cred_default
 	 */
-	GIT_CREDTYPE_DEFAULT = (1u << 3),
+	GIT_CRED_DEFAULT = (1u << 3),
 
 	/**
 	 * An SSH interactive authentication request
 	 * @see git_cred_ssh_interactive_new
 	 */
-	GIT_CREDTYPE_SSH_INTERACTIVE = (1u << 4),
+	GIT_CRED_SSH_INTERACTIVE = (1u << 4),
 
 	/**
 	 * Username-only authentication request
@@ -64,7 +64,7 @@ typedef enum {
 	 *
 	 * @see git_cred_username_new
 	 */
-	GIT_CREDTYPE_USERNAME = (1u << 5),
+	GIT_CRED_USERNAME = (1u << 5),
 
 	/**
 	 * An SSH key-based authentication request
@@ -75,8 +75,8 @@ typedef enum {
 	 *
 	 * @see git_cred_ssh_key_memory_new
 	 */
-	GIT_CREDTYPE_SSH_MEMORY = (1u << 6),
-} git_credtype_t;
+	GIT_CRED_SSH_MEMORY = (1u << 6),
+} git_cred_t;
 
 /**
  * The base structure for all credential types

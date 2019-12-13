@@ -50,7 +50,7 @@ static int cred_acquire_cb(
 	GIT_UNUSED(user_from_url);
 	GIT_UNUSED(payload);
 
-	if (GIT_CREDTYPE_USERNAME & allowed_types) {
+	if (GIT_CRED_USERNAME & allowed_types) {
 		if (!_remote_user) {
 			printf("GITTEST_REMOTE_USER must be set\n");
 			return -1;
@@ -59,7 +59,7 @@ static int cred_acquire_cb(
 		return git_cred_username_new(cred, _remote_user);
 	}
 
-	if (GIT_CREDTYPE_DEFAULT & allowed_types) {
+	if (GIT_CRED_DEFAULT & allowed_types) {
 		if (!_remote_default) {
 			printf("GITTEST_REMOTE_DEFAULT must be set to use NTLM/Negotiate credentials\n");
 			return -1;
@@ -68,7 +68,7 @@ static int cred_acquire_cb(
 		return git_cred_default_new(cred);
 	}
 
-	if (GIT_CREDTYPE_SSH_KEY & allowed_types) {
+	if (GIT_CRED_SSH_KEY & allowed_types) {
 		if (!_remote_user || !_remote_ssh_pubkey || !_remote_ssh_key || !_remote_ssh_passphrase) {
 			printf("GITTEST_REMOTE_USER, GITTEST_REMOTE_SSH_PUBKEY, GITTEST_REMOTE_SSH_KEY and GITTEST_REMOTE_SSH_PASSPHRASE must be set\n");
 			return -1;
@@ -77,7 +77,7 @@ static int cred_acquire_cb(
 		return git_cred_ssh_key_new(cred, _remote_user, _remote_ssh_pubkey, _remote_ssh_key, _remote_ssh_passphrase);
 	}
 
-	if (GIT_CREDTYPE_USERPASS_PLAINTEXT & allowed_types) {
+	if (GIT_CRED_USERPASS_PLAINTEXT & allowed_types) {
 		if (!_remote_user || !_remote_pass) {
 			printf("GITTEST_REMOTE_USER and GITTEST_REMOTE_PASS must be set\n");
 			return -1;

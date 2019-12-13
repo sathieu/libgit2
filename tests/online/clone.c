@@ -316,7 +316,7 @@ static int cred_count_calls_cb(git_cred **cred, const char *url, const char *use
 
 	GIT_UNUSED(url); GIT_UNUSED(user); GIT_UNUSED(allowed_types);
 
-	if (allowed_types == GIT_CREDTYPE_USERNAME)
+	if (allowed_types == GIT_CRED_USERNAME)
 		return git_cred_username_new(cred, "foo");
 
 	(*counter)++;
@@ -355,7 +355,7 @@ int cred_default(
 	GIT_UNUSED(user_from_url);
 	GIT_UNUSED(payload);
 
-	if (!(allowed_types & GIT_CREDTYPE_DEFAULT))
+	if (!(allowed_types & GIT_CRED_DEFAULT))
 		return 0;
 
 	return git_cred_default_new(cred);
@@ -464,10 +464,10 @@ static int cred_cb(git_cred **cred, const char *url, const char *user_from_url,
 {
 	GIT_UNUSED(url); GIT_UNUSED(user_from_url); GIT_UNUSED(payload);
 
-	if (allowed_types & GIT_CREDTYPE_USERNAME)
+	if (allowed_types & GIT_CRED_USERNAME)
 		return git_cred_username_new(cred, _remote_user);
 
-	if (allowed_types & GIT_CREDTYPE_SSH_KEY)
+	if (allowed_types & GIT_CRED_SSH_KEY)
 		return git_cred_ssh_key_new(cred,
 			_remote_user, _remote_ssh_pubkey,
 			_remote_ssh_privkey, _remote_ssh_passphrase);
@@ -483,9 +483,9 @@ static int check_ssh_auth_methods(git_cred **cred, const char *url, const char *
 	GIT_UNUSED(cred); GIT_UNUSED(url); GIT_UNUSED(username_from_url); GIT_UNUSED(data);
 
 	if (!*with_user)
-		cl_assert_equal_i(GIT_CREDTYPE_USERNAME, allowed_types);
+		cl_assert_equal_i(GIT_CRED_USERNAME, allowed_types);
 	else
-		cl_assert(!(allowed_types & GIT_CREDTYPE_USERNAME));
+		cl_assert(!(allowed_types & GIT_CRED_USERNAME));
 
 	return GIT_EUSER;
 }
@@ -648,10 +648,10 @@ static int ssh_memory_cred_cb(git_cred **cred, const char *url, const char *user
 {
 	GIT_UNUSED(url); GIT_UNUSED(user_from_url); GIT_UNUSED(payload);
 
-	if (allowed_types & GIT_CREDTYPE_USERNAME)
+	if (allowed_types & GIT_CRED_USERNAME)
 		return git_cred_username_new(cred, _remote_user);
 
-	if (allowed_types & GIT_CREDTYPE_SSH_KEY)
+	if (allowed_types & GIT_CRED_SSH_KEY)
 	{
 		char *pubkey = read_key_file(_remote_ssh_pubkey);
 		char *privkey = read_key_file(_remote_ssh_privkey);

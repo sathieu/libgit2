@@ -26,9 +26,9 @@
 #include "streams/socket.h"
 
 git_http_auth_scheme auth_schemes[] = {
-	{ GIT_AUTHTYPE_NEGOTIATE, "Negotiate", GIT_CREDTYPE_DEFAULT, git_http_auth_negotiate },
-	{ GIT_AUTHTYPE_NTLM, "NTLM", GIT_CREDTYPE_USERPASS_PLAINTEXT, git_http_auth_ntlm },
-	{ GIT_AUTHTYPE_BASIC, "Basic", GIT_CREDTYPE_USERPASS_PLAINTEXT, git_http_auth_basic },
+	{ GIT_AUTHTYPE_NEGOTIATE, "Negotiate", GIT_CRED_DEFAULT, git_http_auth_negotiate },
+	{ GIT_AUTHTYPE_NTLM, "NTLM", GIT_CRED_USERPASS_PLAINTEXT, git_http_auth_ntlm },
+	{ GIT_AUTHTYPE_BASIC, "Basic", GIT_CRED_USERPASS_PLAINTEXT, git_http_auth_basic },
 };
 
 static const char *upload_pack_service = "upload-pack";
@@ -79,7 +79,7 @@ typedef struct {
 	git_stream *stream;
 
 	git_http_authtype_t authtypes;
-	git_credtype_t credtypes;
+	git_cred_t credtypes;
 
 	git_cred *cred;
 	unsigned url_cred_presented : 1,
@@ -139,7 +139,7 @@ static git_http_auth_scheme *scheme_for_challenge(
 
 	for (i = 0; i < ARRAY_SIZE(auth_schemes); i++) {
 		const char *scheme_name = auth_schemes[i].name;
-		const git_credtype_t scheme_types = auth_schemes[i].credtypes;
+		const git_cred_t scheme_types = auth_schemes[i].credtypes;
 		size_t scheme_len;
 
 		scheme_len = strlen(scheme_name);
@@ -422,10 +422,10 @@ static int apply_url_credentials(
 	const char *username,
 	const char *password)
 {
-	if (allowed_types & GIT_CREDTYPE_USERPASS_PLAINTEXT)
+	if (allowed_types & GIT_CRED_USERPASS_PLAINTEXT)
 		return git_cred_userpass_plaintext_new(cred, username, password);
 
-	if ((allowed_types & GIT_CREDTYPE_DEFAULT) && *username == '\0' && *password == '\0')
+	if ((allowed_types & GIT_CRED_DEFAULT) && *username == '\0' && *password == '\0')
 		return git_cred_default_new(cred);
 
 	return GIT_PASSTHROUGH;

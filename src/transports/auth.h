@@ -26,7 +26,7 @@ struct git_http_auth_context {
 	git_http_authtype_t type;
 
 	/** Supported credentials */
-	git_credtype_t credtypes;
+	git_cred_t credtypes;
 
 	/** Connection affinity or request affinity */
 	unsigned connection_affinity : 1;
@@ -52,7 +52,7 @@ typedef struct {
 	const char *name;
 
 	/** Credential types this scheme supports */
-	git_credtype_t credtypes;
+	git_cred_t credtypes;
 
 	/** Function to initialize an authentication context */
 	int (*init_context)(

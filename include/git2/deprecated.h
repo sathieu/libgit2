@@ -359,7 +359,7 @@ GIT_EXTERN(int) git_tag_create_frombuffer(
 
 /**@}*/
 
-/** @name Deprecated Credential Callback Types
+/** @name Deprecated Credential Types
  *
  * These types are retained for backward compatibility.  The newer
  * versions of these values should be preferred in all new code.
@@ -370,6 +370,16 @@ GIT_EXTERN(int) git_tag_create_frombuffer(
 
 typedef git_cred_sign_cb git_cred_sign_callback;
 typedef git_cred_ssh_interactive_cb git_cred_ssh_interactive_callback;
+
+#define git_credtype_t git_cred_t
+
+#define GIT_CREDTYPE_USERPASS_PLAINTEXT GIT_CRED_USERPASS_PLAINTEXT
+#define GIT_CREDTYPE_SSH_KEY GIT_CRED_SSH_KEY
+#define GIT_CREDTYPE_SSH_CUSTOM GIT_CRED_SSH_CUSTOM
+#define GIT_CREDTYPE_DEFAULT GIT_CRED_DEFAULT
+#define GIT_CREDTYPE_SSH_INTERACTIVE GIT_CRED_SSH_INTERACTIVE
+#define GIT_CREDTYPE_USERNAME GIT_CRED_USERNAME
+#define GIT_CREDTYPE_SSH_MEMORY GIT_CRED_SSH_MEMORY
 
 /**@}*/
 

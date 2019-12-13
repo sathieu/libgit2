@@ -42,10 +42,10 @@ int git_cred_userpass(
 	else
 		return -1;
 
-	if (GIT_CREDTYPE_USERNAME & allowed_types)
+	if (GIT_CRED_USERNAME & allowed_types)
 		return git_cred_username_new(cred, effective_username);
 
-	if ((GIT_CREDTYPE_USERPASS_PLAINTEXT & allowed_types) == 0 ||
+	if ((GIT_CRED_USERPASS_PLAINTEXT & allowed_types) == 0 ||
 			git_cred_userpass_plaintext_new(cred, effective_username, userpass->password) < 0)
 		return -1;
 

@@ -209,10 +209,10 @@ static int acquire_url_cred(
 	const char *username,
 	const char *password)
 {
-	if (allowed_types & GIT_CREDTYPE_USERPASS_PLAINTEXT)
+	if (allowed_types & GIT_CRED_USERPASS_PLAINTEXT)
 		return git_cred_userpass_plaintext_new(cred, username, password);
 
-	if ((allowed_types & GIT_CREDTYPE_DEFAULT) && *username == '\0' && *password == '\0')
+	if ((allowed_types & GIT_CRED_DEFAULT) && *username == '\0' && *password == '\0')
 		return git_cred_default_new(cred);
 
 	return 1;
@@ -227,7 +227,7 @@ static int acquire_fallback_cred(
 
 	/* If the target URI supports integrated Windows authentication
 	 * as an authentication mechanism */
-	if (GIT_CREDTYPE_DEFAULT & allowed_types) {
+	if (GIT_CRED_DEFAULT & allowed_types) {
 		wchar_t *wide_url;
 		HRESULT hCoInitResult;
 
@@ -351,9 +351,9 @@ static int apply_credentials(
 	GIT_UNUSED(url);
 
 	/* If we have creds, just apply them */
-	if (creds && creds->credtype == GIT_CREDTYPE_USERPASS_PLAINTEXT)
+	if (creds && creds->credtype == GIT_CRED_USERPASS_PLAINTEXT)
 		error = apply_userpass_credentials(request, target, mechanisms, creds);
-	else if (creds && creds->credtype == GIT_CREDTYPE_DEFAULT)
+	else if (creds && creds->credtype == GIT_CRED_DEFAULT)
 		error = apply_default_credentials(request, target, mechanisms);
 
 	return error;
@@ -600,23 +600,23 @@ static int parse_unauthorized_response(
 	}
 
 	if (WINHTTP_AUTH_SCHEME_NTLM & supported) {
-		*allowed_types |= GIT_CREDTYPE_USERPASS_PLAINTEXT;
-		*allowed_types |= GIT_CREDTYPE_DEFAULT;
+		*allowed_types |= GIT_CRED_USERPASS_PLAINTEXT;
+		*allowed_types |= GIT_CRED_DEFAULT;
 		*allowed_mechanisms |= GIT_WINHTTP_AUTH_NTLM;
 	}
 
 	if (WINHTTP_AUTH_SCHEME_NEGOTIATE & supported) {
-		*allowed_types |= GIT_CREDTYPE_DEFAULT;
+		*allowed_types |= GIT_CRED_DEFAULT;
 		*allowed_mechanisms |= GIT_WINHTTP_AUTH_NEGOTIATE;
 	}
 
 	if (WINHTTP_AUTH_SCHEME_BASIC & supported) {
-		*allowed_types |= GIT_CREDTYPE_USERPASS_PLAINTEXT;
+		*allowed_types |= GIT_CRED_USERPASS_PLAINTEXT;
 		*allowed_mechanisms |= GIT_WINHTTP_AUTH_BASIC;
 	}
 
 	if (WINHTTP_AUTH_SCHEME_DIGEST & supported) {
-		*allowed_types |= GIT_CREDTYPE_USERPASS_PLAINTEXT;
+		*allowed_types |= GIT_CRED_USERPASS_PLAINTEXT;
 		*allowed_mechanisms |= GIT_WINHTTP_AUTH_DIGEST;
 	}
 

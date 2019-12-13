@@ -22,7 +22,7 @@ static int basic_next_token(
 
 	GIT_UNUSED(ctx);
 
-	if (c->credtype != GIT_CREDTYPE_USERPASS_PLAINTEXT) {
+	if (c->credtype != GIT_CRED_USERPASS_PLAINTEXT) {
 		git_error_set(GIT_ERROR_INVALID, "invalid credential type for basic auth");
 		goto on_error;
 	}
@@ -48,7 +48,7 @@ on_error:
 
 static git_http_auth_context basic_context = {
 	GIT_AUTHTYPE_BASIC,
-	GIT_CREDTYPE_USERPASS_PLAINTEXT,
+	GIT_CRED_USERPASS_PLAINTEXT,
 	0,
 	NULL,
 	basic_next_token,

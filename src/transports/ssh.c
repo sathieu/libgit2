@@ -354,12 +354,12 @@ static int _git_ssh_authenticate_session(
 	do {
 		git_error_clear();
 		switch (cred->credtype) {
-		case GIT_CREDTYPE_USERPASS_PLAINTEXT: {
+		case GIT_CRED_USERPASS_PLAINTEXT: {
 			git_cred_userpass_plaintext *c = (git_cred_userpass_plaintext *)cred;
 			rc = libssh2_userauth_password(session, c->username, c->password);
 			break;
 		}
-		case GIT_CREDTYPE_SSH_KEY: {
+		case GIT_CRED_SSH_KEY: {
 			git_cred_ssh_key *c = (git_cred_ssh_key *)cred;
 
 			if (c->privatekey)
@@ -371,7 +371,7 @@ static int _git_ssh_authenticate_session(
 
 			break;
 		}
-		case GIT_CREDTYPE_SSH_CUSTOM: {
+		case GIT_CRED_SSH_CUSTOM: {
 			git_cred_ssh_custom *c = (git_cred_ssh_custom *)cred;
 
 			rc = libssh2_userauth_publickey(
@@ -379,7 +379,7 @@ static int _git_ssh_authenticate_session(
 				c->publickey_len, c->sign_callback, &c->payload);
 			break;
 		}
-		case GIT_CREDTYPE_SSH_INTERACTIVE: {
+		case GIT_CRED_SSH_INTERACTIVE: {
 			void **abstract = libssh2_session_abstract(session);
 			git_cred_ssh_interactive *c = (git_cred_ssh_interactive *)cred;
 
@@ -401,7 +401,7 @@ static int _git_ssh_authenticate_session(
 			break;
 		}
 #ifdef GIT_SSH_MEMORY_CREDENTIALS
-		case GIT_CREDTYPE_SSH_MEMORY: {
+		case GIT_CRED_SSH_MEMORY: {
 			git_cred_ssh_key *c = (git_cred_ssh_key *)cred;
 
 			assert(c->username);
@@ -609,7 +609,7 @@ post_extract:
 
 	/* we need the username to ask for auth methods */
 	if (!urldata.username) {
-		if ((error = request_creds(&cred, t, NULL, GIT_CREDTYPE_USERNAME)) < 0)
+		if ((error = request_creds(&cred, t, NULL, GIT_CRED_USERNAME)) < 0)
 			goto done;
 
 		urldata.username = git__strdup(((git_cred_username *) cred)->username);
@@ -806,23 +806,23 @@ static int list_auth_methods(int *out, LIBSSH2_SESSION *session, const char *use
 			ptr++;
 
 		if (!git__prefixcmp(ptr, SSH_AUTH_PUBLICKEY)) {
-			*out |= GIT_CREDTYPE_SSH_KEY;
-			*out |= GIT_CREDTYPE_SSH_CUSTOM;
+			*out |= GIT_CRED_SSH_KEY;
+			*out |= GIT_CRED_SSH_CUSTOM;
 #ifdef GIT_SSH_MEMORY_CREDENTIALS
-			*out |= GIT_CREDTYPE_SSH_MEMORY;
+			*out |= GIT_CRED_SSH_MEMORY;
 #endif
 			ptr += strlen(SSH_AUTH_PUBLICKEY);
 			continue;
 		}
 
 		if (!git__prefixcmp(ptr, SSH_AUTH_PASSWORD)) {
-			*out |= GIT_CREDTYPE_USERPASS_PLAINTEXT;
+			*out |= GIT_CRED_USERPASS_PLAINTEXT;
 			ptr += strlen(SSH_AUTH_PASSWORD);
 			continue;
 		}
 
 		if (!git__prefixcmp(ptr, SSH_AUTH_KEYBOARD_INTERACTIVE)) {
-			*out |= GIT_CREDTYPE_SSH_INTERACTIVE;
+			*out |= GIT_CRED_SSH_INTERACTIVE;
 			ptr += strlen(SSH_AUTH_KEYBOARD_INTERACTIVE);
 			continue;
 		}

@@ -23,7 +23,7 @@ GIT_BEGIN_DECL
  * The base structure for all credential types
  */
 struct git_cred {
-	git_credtype_t credtype; /**< A type of credential */
+	git_cred_t credtype; /**< A type of credential */
 
 	/** The deallocator for this type of credentials */
 	void GIT_CALLBACK(free)(git_cred *cred);

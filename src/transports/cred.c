@@ -17,11 +17,11 @@ static int git_cred_ssh_key_type_new(
 	const char *publickey,
 	const char *privatekey,
 	const char *passphrase,
-	git_credtype_t credtype);
+	git_cred_t credtype);
 
 int git_cred_has_username(git_cred *cred)
 {
-	if (cred->credtype == GIT_CREDTYPE_DEFAULT)
+	if (cred->credtype == GIT_CRED_DEFAULT)
 		return 0;
 
 	return 1;
@@ -30,28 +30,28 @@ int git_cred_has_username(git_cred *cred)
 const char *git_cred_get_username(git_cred *cred)
 {
 	switch (cred->credtype) {
-	case GIT_CREDTYPE_USERNAME:
+	case GIT_CRED_USERNAME:
 	{
 		git_cred_username *c = (git_cred_username *) cred;
 		return c->username;
 	}
-	case GIT_CREDTYPE_USERPASS_PLAINTEXT:
+	case GIT_CRED_USERPASS_PLAINTEXT:
 	{
 		git_cred_userpass_plaintext *c = (git_cred_userpass_plaintext *) cred;
 		return c->username;
 	}
-	case GIT_CREDTYPE_SSH_KEY:
-	case GIT_CREDTYPE_SSH_MEMORY:
+	case GIT_CRED_SSH_KEY:
+	case GIT_CRED_SSH_MEMORY:
 	{
 		git_cred_ssh_key *c = (git_cred_ssh_key *) cred;
 		return c->username;
 	}
-	case GIT_CREDTYPE_SSH_CUSTOM:
+	case GIT_CRED_SSH_CUSTOM:
 	{
 		git_cred_ssh_custom *c = (git_cred_ssh_custom *) cred;
 		return c->username;
 	}
-	case GIT_CREDTYPE_SSH_INTERACTIVE:
+	case GIT_CRED_SSH_INTERACTIVE:
 	{
 		git_cred_ssh_interactive *c = (git_cred_ssh_interactive *) cred;
 		return c->username;
@@ -90,7 +90,7 @@ int git_cred_userpass_plaintext_new(
 	c = git__malloc(sizeof(git_cred_userpass_plaintext));
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->parent.credtype = GIT_CREDTYPE_USERPASS_PLAINTEXT;
+	c->parent.credtype = GIT_CRED_USERPASS_PLAINTEXT;
 	c->parent.free = plaintext_free;
 	c->username = git__strdup(username);
 
@@ -192,7 +192,7 @@ int git_cred_ssh_key_new(
 		publickey,
 		privatekey,
 		passphrase,
-		GIT_CREDTYPE_SSH_KEY);
+		GIT_CRED_SSH_KEY);
 }
 
 int git_cred_ssh_key_memory_new(
@@ -209,7 +209,7 @@ int git_cred_ssh_key_memory_new(
 		publickey,
 		privatekey,
 		passphrase,
-		GIT_CREDTYPE_SSH_MEMORY);
+		GIT_CRED_SSH_MEMORY);
 #else
 	GIT_UNUSED(cred);
 	GIT_UNUSED(username);
@@ -229,7 +229,7 @@ static int git_cred_ssh_key_type_new(
 	const char *publickey,
 	const char *privatekey,
 	const char *passphrase,
-	git_credtype_t credtype)
+	git_cred_t credtype)
 {
 	git_cred_ssh_key *c;
 
@@ -274,7 +274,7 @@ int git_cred_ssh_interactive_new(
 	c = git__calloc(1, sizeof(git_cred_ssh_interactive));
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->parent.credtype = GIT_CREDTYPE_SSH_INTERACTIVE;
+	c->parent.credtype = GIT_CRED_SSH_INTERACTIVE;
 	c->parent.free = ssh_interactive_free;
 
 	c->username = git__strdup(username);
@@ -295,7 +295,7 @@ int git_cred_ssh_key_from_agent(git_cred **cred, const char *username) {
 	c = git__calloc(1, sizeof(git_cred_ssh_key));
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->parent.credtype = GIT_CREDTYPE_SSH_KEY;
+	c->parent.credtype = GIT_CRED_SSH_KEY;
 	c->parent.free = ssh_key_free;
 
 	c->username = git__strdup(username);
@@ -322,7 +322,7 @@ int git_cred_ssh_custom_new(
 	c = git__calloc(1, sizeof(git_cred_ssh_custom));
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->parent.credtype = GIT_CREDTYPE_SSH_CUSTOM;
+	c->parent.credtype = GIT_CRED_SSH_CUSTOM;
 	c->parent.free = ssh_custom_free;
 
 	c->username = git__strdup(username);
@@ -352,7 +352,7 @@ int git_cred_default_new(git_cred **cred)
 	c = git__calloc(1, sizeof(git_cred_default));
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->credtype = GIT_CREDTYPE_DEFAULT;
+	c->credtype = GIT_CRED_DEFAULT;
 	c->free = default_free;
 
 	*cred = c;
@@ -373,7 +373,7 @@ int git_cred_username_new(git_cred **cred, const char *username)
 	c = git__malloc(allocsize);
 	GIT_ERROR_CHECK_ALLOC(c);
 
-	c->parent.credtype = GIT_CREDTYPE_USERNAME;
+	c->parent.credtype = GIT_CRED_USERNAME;
 	c->parent.free = username_free;
 	memcpy(c->username, username, len + 1);
 

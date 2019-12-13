@@ -46,7 +46,7 @@ static int ntlm_set_credentials(http_auth_ntlm_context *ctx, git_cred *_cred)
 	char *domain = NULL, *domainuser = NULL;
 	int error = 0;
 
-	assert(_cred->credtype == GIT_CREDTYPE_USERPASS_PLAINTEXT);
+	assert(_cred->credtype == GIT_CRED_USERPASS_PLAINTEXT);
 	cred = (git_cred_userpass_plaintext *)_cred;
 
 	if ((sep = strchr(cred->username, '\\')) != NULL) {
@@ -208,7 +208,7 @@ int git_http_auth_ntlm(
 	}
 
 	ctx->parent.type = GIT_AUTHTYPE_NTLM;
-	ctx->parent.credtypes = GIT_CREDTYPE_USERPASS_PLAINTEXT;
+	ctx->parent.credtypes = GIT_CRED_USERPASS_PLAINTEXT;
 	ctx->parent.connection_affinity = 1;
 	ctx->parent.set_challenge = ntlm_set_challenge;
 	ctx->parent.next_token = ntlm_next_token;
